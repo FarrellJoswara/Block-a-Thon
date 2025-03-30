@@ -2,7 +2,9 @@
 "use client";
 
 import { useRef } from "react";
-import Card from "./ui/Card"; // Ensure this path is correct
+import Card from "./ui/Card"; 
+import { MapComponent } from "./map";
+import { MapProvider } from "../providers/map-provider"; 
 
 interface House {
   id: number;
@@ -46,7 +48,6 @@ const generateHouses = (count: number): House[] => {
   return generatedHouses;
 };
 
-// --- Component Starts Here ---
 
 const HouseScroller: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -55,15 +56,17 @@ const HouseScroller: React.FC = () => {
   const houses = generateHouses(numberOfHousesToDisplay);
 
 return (
-    <div className="flex flex-col lg:flex-row h-screen bg-gray-900 text-white w-full lg:w-400 mx-auto"> 
+    <div className="flex flex-col lg:flex-row h-screen bg-secondary-400 text-white w-full lg:w-6/6 mx-auto"> 
       {/* Adjusted here */}
-      <div className="w-full lg:w-3/5 h-64 lg:h-auto bg-gray-800 flex items-center justify-center rounded-lg border border-gray-700 mb-4 lg:mb-0 lg:mr-4">
-        <p className="text-gray-400 text-xl">[Map Goes Here]</p>
+      <div className="w-full lg:w-3/5 h-64 lg:h-auto bg-secondary flex items-center justify-center rounded-lg border border-gray-700 mb-4 lg:mb-0 lg:mr-4">
+      <MapProvider>
+      <MapComponent/>
+      </MapProvider>
       </div>
 
       <div className="w-full lg:w-2/5 flex flex-col bg-gray-800 rounded-lg border border-gray-700">
         {/* Header Section */}
-        <div className="px-4 py-3 border-b border-gray-700">
+        <div className="px-4 py-3 border-secondary border-gray-700">
           <h2 className="text-xl font-semibold">Available Properties</h2>
           <p className="text-gray-400">{houses.length} homes found</p>
         </div>

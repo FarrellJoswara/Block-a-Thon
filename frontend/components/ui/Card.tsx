@@ -12,7 +12,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ image, price, beds, baths, sqft }) => {
   return (
     // Added group class for potential hover effects later
-    <div className="w-full shadow-md rounded-lg overflow-hidden border border-gray-700 bg-gray-800 group"> 
+    <div className="w-full shadow-md rounded-lg overflow-hidden border border-gray-700 bg-secondary group"> 
       <div className="relative">
         {/* INCREASED image height from h-40 to h-48 */}
         <img src={image} alt={price} className="w-full h-48 object-cover" /> 
