@@ -2,11 +2,13 @@
 import Image from "next/image";
 import HouseScroller from "../../components/HouseScroller";
 import LoginButton from "../../components/LoginButton";
+import AddHouse from "../../components/AddHouse";
 
 import React, { useState } from "react";
 import { ethers, formatUnits } from "ethers";
 import { getContractInstance } from "../contracts/contractInteractions"; // Import your contract interaction functions
 import ContractABI from "./abis/contractABI.json"; // Import ABI for your contract
+
 
 const Home: React.FC = () => {
   const [housePrice, setHousePrice] = useState<number | null>(null);
@@ -37,6 +39,7 @@ const Home: React.FC = () => {
       <header className="flex flex-row gap-[5px] mx-auto bg-gray-900 rounded-lg p-4 shadow-md border border-gray-700 w-full">
         <LoginButton />
         <h1 className="text-6xl font-bold text-center mx-auto">NFT Zillow</h1>
+        <AddHouse />
       </header>
       
       {/* Main content */}
