@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {ZillowNFT} from "../src/smartcontract.sol";
+import {ZillowNFT} from "../src/ZillowNFT.sol";
 
 contract CounterTest is Test {
     Counter public counter;

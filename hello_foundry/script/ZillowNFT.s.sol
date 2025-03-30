@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {ZillowNFT} from "../src/smartcontract.sol";
+import {ZillowNFT} from "../src/ZillowNFT.sol";
 
 contract CounterScript is Script {
     ZillowNFT public house;
