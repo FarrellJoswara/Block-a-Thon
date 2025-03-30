@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Card from "./ui/Card";
 import { MapComponent } from "./map";
 import { MapProvider } from "../providers/map-provider";
 
@@ -51,23 +50,29 @@ const generateHouses = (count: number): House[] => {
 
 const HouseScroller: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
+  const [selectedHouse, setSelectedHouse] = useState<House | null>(null);
 
   const numberOfHousesToDisplay = 10;
   const houses = generateHouses(numberOfHousesToDisplay);
 
-  const toggleCardExpansion = (id: number) => {
-    setExpandedCardId((prevId) => (prevId === id ? null : id));
+  const openModal = (house: House) => {
+    setSelectedHouse(house);
+  };
+
+  const closeModal = () => {
+    setSelectedHouse(null);
   };
 
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-secondary-400 text-white w-full lg:w-6/6 mx-auto">
+      {/* Map Section */}
       <div className="w-full lg:w-3/5 h-64 lg:h-auto bg-secondary flex items-center justify-center rounded-lg border border-gray-700 mb-4 lg:mb-0 lg:mr-4">
         <MapProvider>
           <MapComponent />
         </MapProvider>
       </div>
 
+      {/* Cards Section */}
       <div className="w-full lg:w-2/5 flex flex-col bg-gray-800 rounded-lg border border-gray-700">
         <div className="px-4 py-3 border-secondary border-gray-700">
           <h2 className="text-xl font-semibold">Available Properties</h2>
@@ -79,30 +84,52 @@ const HouseScroller: React.FC = () => {
             {houses.map((house) => (
               <div
                 key={house.id}
-                className={`bg-gray-700 rounded-lg p-4 shadow-md transition-all duration-300 ${expandedCardId === house.id ? "scale-105" : "scale-100"}`}
+                className="bg-gray-700 rounded-lg p-4 shadow-md transition-all duration-300 cursor-pointer hover:scale-105"
+                onClick={() => openModal(house)}
               >
-                <div className="cursor-pointer" onClick={() => toggleCardExpansion(house.id)}>
-                  <img
-                    src={house.img}
-                    alt="House"
-                    className="w-full h-32 object-cover rounded-md mb-4"
-                  />
-                  <h3 className="text-lg font-bold">{house.price}</h3>
-                  <p className="text-sm text-gray-400">
-                    {house.beds} Beds • {house.baths} Baths • {house.sqft} sqft
-                  </p>
-                </div>
-
-                {expandedCardId === house.id && (
-                  <div className="mt-4 text-sm text-gray-300">
-                    <p>{house.description}</p>
-                  </div>
-                )}
+                <img
+                  src={house.img}
+                  alt="House"
+                  className="w-full h-32 object-cover rounded-md mb-4"
+                />
+                <h3 className="text-lg font-bold">{house.price}</h3>
+                <p className="text-sm text-gray-400">
+                  {house.beds} Beds • {house.baths} Baths • {house.sqft} sqft
+                </p>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Modal Pop-up */}
+      {selectedHouse && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 text-white rounded-lg p-6 w-11/12 max-w-lg shadow-xl relative">
+            {/* Close Button */}
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
+
+            {/* House Image */}
+            <img
+              src={selectedHouse.img}
+              alt="House"
+              className="w-full h-64 object-cover rounded-lg mb-4"
+            />
+
+            {/* House Details */}
+            <h3 className="text-3xl font-bold">{selectedHouse.price}</h3>
+            <p className="text-lg text-gray-400">
+              {selectedHouse.beds} Beds • {selectedHouse.baths} Baths • {selectedHouse.sqft} sqft
+            </p>
+            <p className="text-sm text-gray-300 mt-2">{selectedHouse.description}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
