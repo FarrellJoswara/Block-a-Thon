@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NFT Zillow",
+  title: "ZillowNFT",
   description: "A Web3 based Zillow Clone",
 };
 
