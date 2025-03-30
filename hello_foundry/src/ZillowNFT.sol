@@ -73,6 +73,17 @@ contract ZillowNFT is ERC721URIStorage {
         return _homePrice[tokenId];
     }
 
+    function setSaleStatus(uint256 tokenId) public view returns (uint256){
+        return forSale[tokenId];
+    }
+
+    function setSaleStatus(uint256 tokenId, uint256 price) public {
+        require(ownerOf(tokenId) == msg.sender, "Only owner can list/unlist the house");
+        forSale[tokenId] = price;
+
+        emit PriceChanged(tokenId, price);
+    }
+
     function buyHouse(uint256 tokenId) public payable {
         uint256 price = _homePrice[tokenId];
         address owner = ownerOf(tokenId);
