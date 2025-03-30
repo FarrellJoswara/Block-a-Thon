@@ -1,13 +1,20 @@
 "use client";
+import { useMetaMask } from "../src/app/components/TestMetaMask";
+import MetaMaskButton from "./MetaMaskButton";
 
-const LoginButton = () => {
-return (
-    <button
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded "
-        onClick={() => alert("Login button clicked")}
-    >
-        Login
-    </button>
-)
-}
+const LoginButton: React.FC = () => {
+  const { account, errorMessage, connectMetaMask } = useMetaMask();
+
+  return (
+    <div style={{ padding: "2rem" }}>
+      <MetaMaskButton onClick={connectMetaMask} />
+      {errorMessage && (
+        <div style={{ color: "red" }}>
+          <p>Error: {errorMessage}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default LoginButton;
