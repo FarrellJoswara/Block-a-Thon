@@ -27,6 +27,10 @@ const defaultMapOptions = {
     tilt: 0,
     gestureHandling: 'auto',
     mapTypeId: 'roadmap',
+    fullscreenControl: false,
+    streetViewControl: false,
+    satellitleViewControl: false,
+    mapTypeControl: false,
 };
 
 const MapComponent = () => {
