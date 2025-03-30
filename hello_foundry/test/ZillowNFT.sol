@@ -18,7 +18,7 @@ contract CounterTest is Test {
         "olathe",
         2000000
         );
-
+        vm.prank(0x70c8Af5E0D1B00B166421505a034f0BA7B31a73c);
         house.setPrice(token_id,3000000);
         assertEq(house.getPrice(token_id), 3000000);
     }
