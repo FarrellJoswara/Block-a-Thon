@@ -5,20 +5,22 @@ import {Test, console} from "forge-std/Test.sol";
 import {ZillowNFT} from "../src/ZillowNFT.sol";
 
 contract CounterTest is Test {
-    Counter public counter;
+    ZillowNFT public house;
 
-    function setUp() public {
-        counter = new Counter();
-        counter.setNumber(0);
+    function test_setPrice() public {
+        house = new ZillowNFT();
+        
+        uint256 token_id = house.mintNFT(
+        0x70c8Af5E0D1B00B166421505a034f0BA7B31a73c,
+        "hello",
+        "potato",
+        "my house",
+        "olathe",
+        2000000
+        );
+
+        house.setPrice(token_id,3000000);
+        assertEq(house.getPrice(token_id), 3000000);
     }
 
-    function test_Increment() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
-    }
 }
