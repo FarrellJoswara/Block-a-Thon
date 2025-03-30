@@ -15,10 +15,12 @@ contract ZillowNFT is ERC721URIStorage {
     mapping(uint256 => string) private _homeLocation;
     mapping(uint256 => uint256) private _homePrice;
 
+    mapping(uint256 => bool) public forSale; 
+
 
     constructor() ERC721("ZillowNFT", "ZNFT") {}
 
-    function mintNFT(address recipient, string memory metadataURI, string memory tokenName, string memory tokenLabel, string homeLocation, uint256 homePrice)
+    function mintNFT(address recipient, string memory metadataURI, string memory tokenName, string memory tokenLabel, string homeLocation, uint256 homePrice, bool forSale)
         public
         returns (uint256)
     {
@@ -31,6 +33,9 @@ contract ZillowNFT is ERC721URIStorage {
         _tokenLabels[newItemId] = tokenLabel;
         _homeLocation[newItemId] = homeLocation;
         _homePrice[newItemId] = homePrice;
+        forSale[newItemId] = true;
+
+        emit MintHouse(newItemId, recipient, metadataURI, homeLocation, homePrice, forSale);
 
         return newItemId;
     }
@@ -57,19 +62,34 @@ contract ZillowNFT is ERC721URIStorage {
         return _tokenLabels[tokenId];
     }
 
-    function setPrice(uint256 tokenId, uint256 price) public view returns (string memory){
+    function setPrice(uint256 tokenId, uint256 price) public returns (string memory){
         require(ownerOf(tokenid) == msg.sender, "Only owner can set the price");
         _homePrice[tokenId] = price;
+
+        emit PriceChanged(tokenId, price);
     }
 
     function buyHouse(uint256 tokenId) public payable {
-        unit256 price = _homePrice[tokenId];
+        uint256 price = _homePrice[tokenId];
         address owner = ownerOf(tokenId);
+        address buyer = msg.sender;
         require(price > 0, "Home not for sale.");
-        require(msg.value==price, "Not correct amount.")
-        //transfer the NFT from owner to buyer
-        _transfer(address owner, msg.sender, tokenId);
+        require(forSale[tokenId], "House is not listed for sale.");
+        require(msg.value==price, "Not correct amount.");
+        require(owner!=buyer, "You already own this house, period.");
         //transfer payment to seller
-        payable(owner).transfer(msg.sender);
+        payable(owner).transfer(msg.value);
+        //transfer the NFT from owner to buyer
+        _transfer(owner, buyer, tokenId);
+        forSale[tokenId] = false;
+
+        emit HomePurchased(tokenId, buyer, price);
     }
+
+    //events
+    event HomePurchased(uint256 tokenId, address buyer, uint256 price);
+    event PriceChanged(uint256 tokenId, uint256 price);
+    event MintHouse(uint256 tokenId, address owner, string metadataURI, string homeLocation, uint256 homePrice, bool forSale);
+
+
 }
