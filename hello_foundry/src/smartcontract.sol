@@ -20,7 +20,7 @@ contract ZillowNFT is ERC721URIStorage {
 
     constructor() ERC721("ZillowNFT", "ZNFT") {}
 
-    function mintNFT(address recipient, string memory metadataURI, string memory tokenName, string memory tokenLabel, string homeLocation, uint256 homePrice, bool forSale)
+    function mintNFT(address recipient, string memory metadataURI, string memory tokenName, string memory tokenLabel, string memory homeLocation, uint256 homePrice)
         public
         returns (uint256)
     {
@@ -35,7 +35,7 @@ contract ZillowNFT is ERC721URIStorage {
         _homePrice[newItemId] = homePrice;
         forSale[newItemId] = true;
 
-        emit MintHouse(newItemId, recipient, metadataURI, homeLocation, homePrice, forSale);
+        emit MintHouse(newItemId, recipient, metadataURI, homeLocation, homePrice, true);
 
         return newItemId;
     }
@@ -63,7 +63,7 @@ contract ZillowNFT is ERC721URIStorage {
     }
 
     function setPrice(uint256 tokenId, uint256 price) public {
-        require(ownerOf(tokenid) == msg.sender, "Only owner can set the price");
+        require(ownerOf(tokenId) == msg.sender, "Only owner can set the price");
         _homePrice[tokenId] = price;
 
         emit PriceChanged(tokenId, price);
