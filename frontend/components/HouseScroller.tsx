@@ -115,7 +115,7 @@ const HouseScroller: React.FC = () => {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gray-900 text-white rounded-lg p-6 w-11/12 max-w-lg shadow-xl relative"
+              className="bg-gray-900 text-white rounded-lg p-6 w-11/12 max-w-4xl max-h-4xl shadow-xl relative"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -126,14 +126,14 @@ const HouseScroller: React.FC = () => {
                 className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl"
                 onClick={closeModal}
               >
-                ✕
+                x
               </button>
 
               {/* House Image */}
               <img
                 src={selectedHouse.img}
                 alt="House"
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                className="w-full h-full object-cover rounded-lg mb-4"
               />
 
               {/* House Details */}
