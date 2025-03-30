@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapComponent } from "./map";
 import { MapProvider } from "../providers/map-provider";
 
@@ -41,7 +42,7 @@ const generateHouses = (count: number): House[] => {
       beds: beds,
       baths: baths,
       sqft: sqft,
-      img: "/house.jpg",
+      img: `/house${id}.png`,
       description: `House ${id} test description`,
     });
   }
@@ -82,9 +83,11 @@ const HouseScroller: React.FC = () => {
         <div ref={scrollRef} className="overflow-y-auto flex-grow p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             {houses.map((house) => (
-              <div
+              <motion.div
                 key={house.id}
-                className="bg-gray-700 rounded-lg p-4 shadow-md transition-all duration-300 cursor-pointer hover:scale-105"
+                className="bg-gray-700 rounded-lg p-4 shadow-md cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
                 onClick={() => openModal(house)}
               >
                 <img
@@ -96,40 +99,56 @@ const HouseScroller: React.FC = () => {
                 <p className="text-sm text-gray-400">
                   {house.beds} Beds • {house.baths} Baths • {house.sqft} sqft
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Modal Pop-up */}
-      {selectedHouse && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-900 text-white rounded-lg p-6 w-11/12 max-w-lg shadow-xl relative">
-            {/* Close Button */}
-            <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl"
-              onClick={closeModal}
+      {/* Animated Modal Pop-up */}
+      <AnimatePresence>
+        {selectedHouse && (
+          <motion.div
+            className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-gray-900 text-white rounded-lg p-6 w-11/12 max-w-lg shadow-xl relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              ✕
-            </button>
+              {/* Close Button */}
+              <button
+                className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl"
+                onClick={closeModal}
+              >
+                ✕
+              </button>
 
-            {/* House Image */}
-            <img
-              src={selectedHouse.img}
-              alt="House"
-              className="w-full h-64 object-cover rounded-lg mb-4"
-            />
+              {/* House Image */}
+              <img
+                src={selectedHouse.img}
+                alt="House"
+                className="w-full h-64 object-cover rounded-lg mb-4"
+              />
 
-            {/* House Details */}
-            <h3 className="text-3xl font-bold">{selectedHouse.price}</h3>
-            <p className="text-lg text-gray-400">
-              {selectedHouse.beds} Beds • {selectedHouse.baths} Baths • {selectedHouse.sqft} sqft
-            </p>
-            <p className="text-sm text-gray-300 mt-2">{selectedHouse.description}</p>
-          </div>
-        </div>
-      )}
+              {/* House Details */}
+              <h3 className="text-3xl font-bold">{selectedHouse.price}</h3>
+              <p className="text-lg text-gray-400">
+                {selectedHouse.beds} Beds • {selectedHouse.baths} Baths •{" "}
+                {selectedHouse.sqft} sqft
+              </p>
+              <p className="text-sm text-gray-300 mt-2">
+                {selectedHouse.description}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

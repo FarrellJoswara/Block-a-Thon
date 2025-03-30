@@ -8,7 +8,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #1b263b;
-    --foreground: #ededed;
+    --foreground: #1b263a;
     --carddefault: #415a77;
   }
 }
